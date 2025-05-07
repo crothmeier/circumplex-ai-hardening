@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: vllm-deny-egress
+  namespace: circumplex-ai
+spec:
+  podSelector:
+    matchLabels:
+      app: vllm
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: circumplex-ai
+    ports:
+    - protocol: TCP
+      port: 6379
+    - protocol: TCP
+      port: 53
